@@ -183,7 +183,7 @@ namespace WPFTestWenskaarten
                                 }
 
                             }
-                            bestand.WriteLine(kleurNaam + " X: " + Canvas.GetLeft(bal) + " Y: " + Canvas.GetTop(bal));
+                            bestand.WriteLine(kleurNaam + " X: " + Math.Round(Canvas.GetLeft(bal), 0) + " Y: " + Math.Round(Canvas.GetTop(bal), 0));
                         }
                         bestand.WriteLine(TekstBox.Text);
                         bestand.WriteLine(lettertypeComboBox.SelectedItem.ToString());
@@ -252,6 +252,7 @@ namespace WPFTestWenskaarten
                     }
                     statusBestand.Content = dlg.FileName;
                     hoofdscherm.Visibility = Visibility.Visible;
+                    OpslaanButton.IsEnabled = true;
                 }
 
             }
