@@ -1,0 +1,14 @@
+﻿<Application x:Class="WPFTestWenskaarten.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WPFTestWenskaarten"
+             StartupUri="WenskaartWindow.xaml">
+    <Application.Resources>
+            <Style TargetType="{x:Type Ellipse}">
+                <Setter Property="Height" Value="40"></Setter>
+                <Setter Property="Width" Value="40"></Setter>
+                <Setter Property="Stroke" Value="Black"></Setter>
+                <Setter Property="StrokeThickness" Value="5"></Setter>
+            </Style>
+    </Application.Resources>
+</Application>
