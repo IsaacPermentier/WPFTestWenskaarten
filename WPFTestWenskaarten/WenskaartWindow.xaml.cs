@@ -152,11 +152,11 @@ namespace WPFTestWenskaarten
         {
             NieuwVeld();
         }
-        
+
         private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             int aantalBallen = 0;
-            foreach(Ellipse bal in canvas.Children)
+            foreach (Ellipse bal in canvas.Children)
             {
                 aantalBallen++;
             }
@@ -166,8 +166,8 @@ namespace WPFTestWenskaarten
                 dlg.FileName = "wenskaart";
                 dlg.DefaultExt = ".kaart";
                 dlg.Filter = "wenskaart |*.kaart";
-                
-                if(dlg.ShowDialog() == true)
+
+                if (dlg.ShowDialog() == true)
                 {
                     using (StreamWriter bestand = new StreamWriter(dlg.FileName))
                     {
@@ -181,9 +181,9 @@ namespace WPFTestWenskaarten
                                 {
                                     kleurNaam = kleur.Naam;
                                 }
-                                    
+
                             }
-                                bestand.WriteLine(kleurNaam + " X: " + Canvas.GetLeft(bal) + " Y: " + Canvas.GetTop(bal));
+                            bestand.WriteLine(kleurNaam + " X: " + Canvas.GetLeft(bal) + " Y: " + Canvas.GetTop(bal));
                         }
                         bestand.WriteLine(TekstBox.Text);
                         bestand.WriteLine(lettertypeComboBox.SelectedItem.ToString());
@@ -201,14 +201,14 @@ namespace WPFTestWenskaarten
         private void Open_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             int aantalBallen;
-            
+
             try
             {
                 NieuwVeld();
                 OpenFileDialog dlg = new OpenFileDialog();
                 dlg.Filter = "wenskaart |*.kaart";
 
-                if(dlg.ShowDialog() == true)
+                if (dlg.ShowDialog() == true)
                 {
                     using (StreamReader bestand = new StreamReader(dlg.FileName))
                     {
@@ -220,7 +220,7 @@ namespace WPFTestWenskaarten
                         kaart.ImageSource = bi;
                         canvas.Background = (ImageBrush)kaart;
                         aantalBallen = Convert.ToInt32(bestand.ReadLine());
-                        for (int teller = 0; teller <= aantalBallen -1; teller++)
+                        for (int teller = 0; teller <= aantalBallen - 1; teller++)
                         {
                             Ellipse bal = new Ellipse();
                             string tekst = bestand.ReadLine();
@@ -238,8 +238,8 @@ namespace WPFTestWenskaarten
                             int startpos = indexX + 2;
                             int indexY = tekst.IndexOf("Y");
                             int lengteX = indexY - 1 - startpos;
-                            string stringX = tekst.Substring(indexX +2, lengteX);
-                            string stringY = tekst.Substring(indexY +2);
+                            string stringX = tekst.Substring(indexX + 2, lengteX);
+                            string stringY = tekst.Substring(indexY + 2);
                             int x = Convert.ToInt32(stringX);
                             int y = Convert.ToInt32(stringY);
                             Canvas.SetLeft(bal, x);
@@ -269,26 +269,41 @@ namespace WPFTestWenskaarten
 
         private void Close_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-           Close();
+            Close();
         }
-        /*
-private void Image_Drop(object sender, DragEventArgs e)
-{
-Image vuilbak = (Image)sender;
-Ellipse gekozenBal = sleepBal;
-canvas.Children.Remove(gekozenBal);
-}
+        private Ellipse VindBal(Object sleepitem)
+        {
+            DependencyObject keuze = (DependencyObject)sleepitem;
+            while (keuze != null)
+            {
+                if (keuze is Ellipse)
+                    return (Ellipse)keuze;
+                keuze = VisualTreeHelper.GetParent(keuze);
+            }
+            return null;
+        }
+        private void Image_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("deKleur"))
+            {
+                Ellipse bal = VindBal(e.OriginalSource);
+                canvas.Children.Remove(bal);
+            }
+        }
+        Canvas sleepcanvas;
+        private void canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                sleepcanvas = (Canvas)sender;
+                Ellipse bal = VindBal(e.OriginalSource);
+                if (bal != null)
+                {
+                    DataObject sleepKleur = new DataObject("deKleur", bal.Fill);
+                    DragDrop.DoDragDrop(bal, sleepKleur, DragDropEffects.Move);
+                }
+            }
 
-private void canvas_MouseMove(object sender, MouseEventArgs e)
-{
-Ellipse cirkel = sleepBal;
-if (e.LeftButton == MouseButtonState.Pressed)
-{
-DataObject sleepKleur = new DataObject("deKleur", cirkel.Fill);
-DragDrop.DoDragDrop(cirkel, sleepKleur, DragDropEffects.Move);
-}
-
-}
-*/
+        }
     }
 }

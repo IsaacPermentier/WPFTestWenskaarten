@@ -33,7 +33,7 @@
         </StatusBar>
         <StackPanel Name="hoofdscherm" Orientation="Horizontal" Visibility="Hidden">
             <StackPanel>
-                <Canvas Name="canvas" Width="500" Height="400" AllowDrop="True" Drop="bal_Drop">
+                <Canvas Name="canvas" Width="500" Height="400" AllowDrop="True" Drop="bal_Drop" MouseMove="canvas_MouseMove">
                     <Canvas.Background>
                         <ImageBrush Stretch="Uniform"></ImageBrush>
                     </Canvas.Background>
@@ -46,7 +46,7 @@
                     <ComboBox Name="comboBoxKleuren" Margin="10" DisplayMemberPath="Naam" SelectedValuePath="Naam" SelectedIndex="-1" SelectionChanged="comboBoxKleuren_SelectionChanged"></ComboBox>
                     <Ellipse Name="bal" Fill="{Binding ElementName=comboBoxKleuren, Path=SelectedItem}" MouseMove="bal_MouseMove" DragEnter="bal_DragEnter" DragLeave="bal_DragLeave"></Ellipse>
                 </StackPanel>
-                <Image Source="Images/vuilnisbak.png" Margin="10 50 10 50" AllowDrop="True"></Image>
+                <Image Source="Images/vuilnisbak.png" Margin="10 50 10 50" AllowDrop="True" Drop="Image_Drop" ></Image>
                 <StackPanel>
                     <TextBlock Text="Lettertype" Margin="10 0 10 0" HorizontalAlignment="Center"></TextBlock>
                     <ComboBox Name="lettertypeComboBox" Margin="10" DataContext="{x:Static Member=Fonts.SystemFontFamilies}" ItemsSource="{Binding}">
