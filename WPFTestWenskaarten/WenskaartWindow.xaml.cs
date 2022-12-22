@@ -93,6 +93,7 @@ namespace WPFTestWenskaarten
             if (e.Data.GetDataPresent("deKleur"))
             {
                 Brush gesleepteKleur = (Brush)e.Data.GetData("deKleur");
+                Ellipse gekozenBal = (Ellipse)e.Data.GetData("gekozenBal");
                 Ellipse nieuweBal = new Ellipse();
                 droppunt = e.GetPosition(canvas);
                 Canvas.SetLeft(nieuweBal, droppunt.X - 20);
@@ -100,6 +101,7 @@ namespace WPFTestWenskaarten
                 nieuweBal.Fill = gesleepteKleur;
                 sleepBal.Fill = Brushes.White;
                 canvas.Children.Add(nieuweBal);
+                canvas.Children.Remove(gekozenBal);
             }
         }
 
@@ -285,23 +287,22 @@ namespace WPFTestWenskaarten
         }
         private void Image_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent("deKleur"))
-            {
-                Ellipse bal = VindBal(e.OriginalSource);
-                canvas.Children.Remove(bal);
-            }
+            Ellipse gekozenBal = (Ellipse)e.Data.GetData("gekozenBal");
+            Brush gesleepteKleur = (Brush)e.Data.GetData("deKleur");
+            canvas.Children.Remove(gekozenBal);
+
         }
-        Canvas sleepcanvas;
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                sleepcanvas = (Canvas)sender;
                 Ellipse bal = VindBal(e.OriginalSource);
                 if (bal != null)
                 {
                     DataObject sleepKleur = new DataObject("deKleur", bal.Fill);
                     DragDrop.DoDragDrop(bal, sleepKleur, DragDropEffects.Move);
+                    DataObject gesleeptebal = new DataObject("gekozenBal", bal);
+                    DragDrop.DoDragDrop(bal, gesleeptebal, DragDropEffects.Move);
                 }
             }
 
