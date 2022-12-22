@@ -77,45 +77,7 @@ namespace WPFTestWenskaarten
                 TekstBox.FontSize = grootte;
             }
         }
-        private Ellipse sleepBal = new Ellipse();
-        private void bal_MouseMove(object sender, MouseEventArgs e)
-        {
-            sleepBal = (Ellipse)sender;
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                DataObject sleepKleur = new DataObject("deKleur", sleepBal.Fill);
-                DragDrop.DoDragDrop(sleepBal, sleepKleur, DragDropEffects.Move);
-            }
-        }
-        Point droppunt = new Point();
-        private void bal_Drop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent("deKleur"))
-            {
-                Brush gesleepteKleur = (Brush)e.Data.GetData("deKleur");
-                Ellipse gekozenBal = (Ellipse)e.Data.GetData("gekozenBal");
-                Ellipse nieuweBal = new Ellipse();
-                droppunt = e.GetPosition(canvas);
-                Canvas.SetLeft(nieuweBal, droppunt.X - 20);
-                Canvas.SetTop(nieuweBal, droppunt.Y - 20);
-                nieuweBal.Fill = gesleepteKleur;
-                sleepBal.Fill = Brushes.White;
-                canvas.Children.Add(nieuweBal);
-                canvas.Children.Remove(gekozenBal);
-            }
-        }
-
-        private void bal_DragEnter(object sender, DragEventArgs e)
-        {
-            Ellipse kader = (Ellipse)sender;
-            kader.StrokeThickness = 7;
-        }
-
-        private void bal_DragLeave(object sender, DragEventArgs e)
-        {
-            Ellipse kader = (Ellipse)sender;
-            kader.StrokeThickness = 5;
-        }
+        
 
         private void Kaarten_Click(object sender, RoutedEventArgs e)
         {
@@ -285,10 +247,48 @@ namespace WPFTestWenskaarten
             }
             return null;
         }
+        private Ellipse sleepBal = new Ellipse();
+        private void bal_MouseMove(object sender, MouseEventArgs e)
+        {
+            sleepBal = (Ellipse)sender;
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DataObject sleepKleur = new DataObject("deKleur", sleepBal.Fill);
+                DragDrop.DoDragDrop(sleepBal, sleepKleur, DragDropEffects.Move);
+            }
+        }
+        Point droppunt = new Point();
+        private void bal_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("deKleur"))
+            {
+                Brush gesleepteKleur = (Brush)e.Data.GetData("deKleur");
+                Ellipse nieuweBal = new Ellipse();
+                droppunt = e.GetPosition(canvas);
+                Canvas.SetLeft(nieuweBal, droppunt.X - 20);
+                Canvas.SetTop(nieuweBal, droppunt.Y - 20);
+                nieuweBal.Fill = gesleepteKleur;
+                sleepBal.Fill = Brushes.White;
+                canvas.Children.Add(nieuweBal);
+            }
+            Ellipse gekozenBal = (Ellipse)e.Data.GetData("gekozenBal");
+            canvas.Children.Remove(gekozenBal);
+        }
+
+        private void bal_DragEnter(object sender, DragEventArgs e)
+        {
+            Ellipse kader = (Ellipse)sender;
+            kader.StrokeThickness = 7;
+        }
+
+        private void bal_DragLeave(object sender, DragEventArgs e)
+        {
+            Ellipse kader = (Ellipse)sender;
+            kader.StrokeThickness = 5;
+        }
         private void Image_Drop(object sender, DragEventArgs e)
         {
             Ellipse gekozenBal = (Ellipse)e.Data.GetData("gekozenBal");
-            Brush gesleepteKleur = (Brush)e.Data.GetData("deKleur");
             canvas.Children.Remove(gekozenBal);
 
         }
